@@ -79,7 +79,7 @@ In 2024, we've [partnered with the Azure App Service for Linux team](https://azu
 
 Prior using the tutorial to integrate Dynatrace you will need to create the Dynatrace image to be used as a side-car.  Please see the following example of creating the image using a Azure Container Registry task:  
 
-### Create the Dybatrace image using a Azure Container Registry task. 
+### Create the Dynatrace image using a Azure Container Registry task. 
 #### Step 1 - Configure build parameters
 ```
 $GITHUB_REPO_URL = "https://github.com/dtPaTh/dt-codemodule-images.git"  
