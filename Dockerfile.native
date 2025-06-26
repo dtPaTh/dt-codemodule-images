@@ -6,3 +6,4 @@ FROM alpine
 COPY --from=dtbase /opt/dynatrace /opt/dynatrace
 
 ENTRYPOINT ["/opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper"]
+CMD ["--source=/opt/dynatrace/oneagent --target=/home/dynatrace/oneagent --debug --technology=nginx --install-path=/home/dynatrace/oneagent | tail -f /dev/null"]
