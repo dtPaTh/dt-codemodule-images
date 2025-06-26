@@ -5,5 +5,5 @@ FROM ${DT_BASEIMG} AS dtbase
 FROM alpine
 COPY --from=dtbase /opt/dynatrace /opt/dynatrace
 
-CMD /opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper --source=/opt/dynatrace/oneagent --target=/home/dynatrace/oneagent --debug --technology=nginx --install-path=/home/dynatrace/oneagent 
+CMD /opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper --source=/opt/dynatrace/oneagent --target=/home/dynatrace/oneagent --debug --technology=nginx --install-path=/home/dynatrace/oneagent | tail -f /dev/null
 
