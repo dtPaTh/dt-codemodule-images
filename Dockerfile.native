@@ -2,7 +2,7 @@ ARG DT_BASEIMG
 
 FROM ${DT_BASEIMG} AS dtbase
 
-FROM scratch
+FROM alpine
 COPY --from=dtbase /opt/dynatrace /opt/dynatrace
 
 ENTRYPOINT ["/opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper"]
