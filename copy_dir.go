@@ -48,11 +48,16 @@ func main() {
     sourceDir := os.Args[1]
     destinationDir := os.Args[2]
 
-    err := copyDir(sourceDir, destinationDir)
-    if err != nil {
-        fmt.Println("Error:", err)
+    _, err := os.Stat(path)
+    if !os.IsNotExist(err) {
+        err := copyDir(sourceDir, destinationDir)
+        if err != nil {
+            fmt.Println("Error:", err)
+        } else {
+            fmt.Println("Directory copied successfully!")
+        }
     } else {
-        fmt.Println("Directory copied successfully!")
+        fmt.Println("Sourcedirectory already exists. Skip copying!")
     }
     
     if len(os.Args) >= 4 && os.Args[3] == "keepalive" {
