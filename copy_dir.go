@@ -49,7 +49,7 @@ func main() {
     destinationDir := os.Args[2]
 
     _, err := os.Stat(destinationDir)
-    if !os.IsNotExist(err) {    
+    if os.IsNotExist(err) {    
         err := copyDir(sourceDir, destinationDir)
         if err != nil {
             fmt.Println("Error:", err)
