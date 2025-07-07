@@ -37,8 +37,8 @@ func copyDir(src, dst string) error {
 }
 
 func main() {
-    if len(os.Args) != 3 {
-        fmt.Println("Usage: copy_directory <source_directory> <target_directory>")
+    if len(os.Args) < 3 {
+        fmt.Println("Usage: copy_dir <source_directory> <target_directory>")
         return
     }
 
@@ -51,4 +51,11 @@ func main() {
     } else {
         fmt.Println("Directory copied successfully!")
     }
+    
+    // Check for optional "keepalive" argument
+    if len(os.Args) >= 4 && os.Args[3] == "keepalive" {
+        fmt.Println("keepalive...")
+        select {} // blocks forever
+    }
+
 }
