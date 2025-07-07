@@ -11,4 +11,4 @@ FROM scratch
 COPY --from=dtbase /opt/dynatrace /opt/dynatrace
 COPY --from=build /bin/copy_dir /bin/copy_dir
 
-ENTRYPOINT ["/bin/copy_dir","/opt/dynatrace","/home/dynatrace"]
+ENTRYPOINT ["/bin/copy_dir","/opt/dynatrace","/home/dynatrace","keepalive"]
