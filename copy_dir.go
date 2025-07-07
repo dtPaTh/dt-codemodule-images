@@ -57,8 +57,8 @@ func main() {
     
     if len(os.Args) >= 4 && os.Args[3] == "keepalive" {
         fmt.Println("keepalive...")
-        for {
-            time.Sleep(time.Hour)
-        }
+        for { 
+            time.Sleep(time.Hour)
+        }
     }
 }
