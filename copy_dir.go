@@ -5,6 +5,7 @@ import (
     "io"
     "os"
     "path/filepath"
+    "time"
 )
 
 func copyDir(src, dst string) error {
@@ -56,7 +57,8 @@ func main() {
     
     if len(os.Args) >= 4 && os.Args[3] == "keepalive" {
         fmt.Println("keepalive...")
-        ch := make(chan struct{})
-        <-ch 
+        for {
+            time.Sleep(time.Hour)
+        }
     }
 }
