@@ -48,7 +48,7 @@ func main() {
     sourceDir := os.Args[1]
     destinationDir := os.Args[2]
 
-    _, err := os.Stat(path)
+    _, err := os.Stat(destinationDir)
     if !os.IsNotExist(err) {    
         err := copyDir(sourceDir, destinationDir)
         if err != nil {
