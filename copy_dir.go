@@ -37,8 +37,10 @@ func copyDir(src, dst string) error {
 }
 
 func main() {
+    fmt.Println("Running copy_dir version v0.2")
+
     if len(os.Args) < 3 {
-        fmt.Println("Usage: copy_dir <source_directory> <target_directory>")
+        fmt.Println("Usage: copy_dir <source_directory> <target_directory> [keepalive]")
         return
     }
 
