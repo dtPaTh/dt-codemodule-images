@@ -52,9 +52,8 @@ func main() {
         fmt.Println("Directory copied successfully!")
     }
     
-    if len(os.Args) >= 4 && os.Args[3] == "keepalive" {
-        fmt.Println("keepalive...")
-        select {} // blocks forever
-    }
-
+    if len(os.Args) >= 4 && os.Args[3] == "keepalive" {
+        fmt.Println("keepalive...")
+        select {}
+    }
 }
