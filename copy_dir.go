@@ -38,7 +38,7 @@ func copyDir(src, dst string) error {
 }
 
 func main() {
-    fmt.Println("Running copy_dir version v0.2")
+    fmt.Println("Running copy_dir version v0.3")
 
     if len(os.Args) < 3 {
         fmt.Println("Usage: copy_dir <source_directory> <target_directory> [keepalive]")
@@ -48,8 +48,8 @@ func main() {
     sourceDir := os.Args[1]
     destinationDir := os.Args[2]
 
-    _, err := os.Stat(path)
-    if !os.IsNotExist(err) {
+    _, err := os.Stat(path)
+    if !os.IsNotExist(err) {    
         err := copyDir(sourceDir, destinationDir)
         if err != nil {
             fmt.Println("Error:", err)
