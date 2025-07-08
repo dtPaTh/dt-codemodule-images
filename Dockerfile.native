@@ -2,5 +2,5 @@ ARG DT_BASEIMG
 
 FROM ${DT_BASEIMG} AS dtbase
 
-ENTRYPOINT["/opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper","--source=/opt/dynatrace/oneagent","--target=/home/dynatrace/oneagent","--debug","--technology=dotnet"]
+ENTRYPOINT ["/opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper","--source=/opt/dynatrace/oneagent","--target=/home/dynatrace/oneagent","--debug","--technology=dotnet"]
 
