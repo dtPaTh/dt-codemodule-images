@@ -54,13 +54,13 @@ func main() {
     keepAlive := false
     
     if len(os.Args) >= (nextArg+1) && os.Args[nextArg] == "keepalive" {
-        keepAlive := true
+        keepAlive = true
         nextArg++
     }
     
     if len(os.Args) >= (nextArg+1) {
         executable := os.Args[nextArg]   
-	    args := os.Args[(nextArg+1):]   
+	args := os.Args[(nextArg+1):]   
     	cmd := exec.Command(os.Args[nextArg], os.Args[(nextArg+1):]...)
     	cmd.Stdout = os.Stdout
     	cmd.Stderr = os.Stderr
