@@ -8,4 +8,4 @@ RUN go build -o /bin/copy_dir ./copy_dir.go
 FROM ${DT_BASEIMG} AS dtbase
 COPY --from=build /bin/copy_dir /bin/copy_dir
 
-ENTRYPOINT ["/bin/copy_dir","/opt/dynatrace","/home/dynatrace","keepalive","/opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper", "--source=/opt/dynatrace/oneagent","--target=/home/dynatraec/oneagent","--debug"]
+ENTRYPOINT ["/bin/copy_dir","/opt/dynatrace","/home/dynatrace","keepalive","/opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper", "--source=/opt/dynatrace/oneagent","--target=/home/dynatrace/oneagent","--debug"]
