@@ -49,12 +49,12 @@ func main() {
     sourceDir := os.Args[1]
     destinationDir := os.Args[2]
 
-    nextArg = 3
+    nextArg := 3
 
     keepAlive := false
     
     if len(os.Args) >= (nextArg+1) && os.Args[nextArg] == "keepalive" {
-        keepAlive = true
+        keepAlive := true
         nextArg++
     }
     
