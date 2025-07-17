@@ -3,10 +3,11 @@ ARG DT_BASEIMG
 FROM golang:1.21 AS build
 WORKDIR /src
 
-COPY *.mod .
-COPY *.go .
+ADD go.mod .
+ADD keepalive  ./keepalive
+ADD copy_dir.go .
 
-RUN go test -v
+RUN go test ./keepalive -v
 RUN go build -o /bin/copy_dir ./copy_dir.go
 
 FROM ${DT_BASEIMG} AS dtbase
