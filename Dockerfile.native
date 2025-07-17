@@ -2,7 +2,11 @@ ARG DT_BASEIMG
 
 FROM golang:1.21 AS build
 WORKDIR /src
-COPY copy_dir.go .
+
+COPY *.mod .
+COPY *.go .
+
+RUN go test -v
 RUN go build -o /bin/copy_dir ./copy_dir.go
 
 FROM ${DT_BASEIMG} AS dtbase
@@ -11,4 +15,4 @@ FROM scratch
 COPY --from=dtbase /opt/dynatrace /opt/dynatrace
 COPY --from=build /bin/copy_dir /bin/copy_dir
 
-ENTRYPOINT ["/bin/copy_dir","/opt/dynatrace","/home/dynatrace"]
+ENTRYPOINT ["/bin/copy_dir","/opt/dynatrace","/home/dynatrace","keepalive"]

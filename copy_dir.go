@@ -4,7 +4,9 @@ import (
     "fmt"
     "io"
     "os"
+    "time"
     "path/filepath"
+    "github.com/dtPaTh/dt-codemodule-images/keepalive"
 )
 
 func copyDir(src, dst string) error {
@@ -37,18 +39,30 @@ func copyDir(src, dst string) error {
 }
 
 func main() {
-    if len(os.Args) != 3 {
-        fmt.Println("Usage: copy_directory <source_directory> <target_directory>")
+    fmt.Println("Running copy_dir version v0.4")
+
+    if len(os.Args) < 3 {
+        fmt.Println("Usage: copy_dir <source_directory> <target_directory> [keepalive]")
         return
     }
 
     sourceDir := os.Args[1]
     destinationDir := os.Args[2]
 
-    err := copyDir(sourceDir, destinationDir)
-    if err != nil {
-        fmt.Println("Error:", err)
+    _, err := os.Stat(destinationDir)
+    if os.IsNotExist(err) {    
+        err := copyDir(sourceDir, destinationDir)
+        if err != nil {
+            fmt.Println("Error:", err)
+        } else {
+            fmt.Println("Directory copied successfully!")
+        }
     } else {
-        fmt.Println("Directory copied successfully!")
+        fmt.Println("Sourcedirectory already exists. Skip copying!")
+    }
+    
+    if len(os.Args) >= 4 && os.Args[3] == "keepalive" {
+        stopChan := make(chan struct{})
+		KeepAlive(stopChan)
     }
 }
