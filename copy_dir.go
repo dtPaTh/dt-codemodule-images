@@ -4,8 +4,9 @@ import (
     "fmt"
     "io"
     "os"
-    "path/filepath"
     "time"
+    "path/filepath"
+    "github.com/dtPaTh/dt-codemodule-images/keepalive"
 )
 
 func copyDir(src, dst string) error {
@@ -61,9 +62,7 @@ func main() {
     }
     
     if len(os.Args) >= 4 && os.Args[3] == "keepalive" {
-        fmt.Println("keepalive...")
-        for { 
-            time.Sleep(time.Hour)
-        }
+        stopChan := make(chan struct{})
+		KeepAlive(stopChan)
     }
 }
