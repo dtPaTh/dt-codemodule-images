@@ -4,7 +4,6 @@ import (
     "fmt"
     "io"
     "os"
-    "time"
     "path/filepath"
     "github.com/dtPaTh/dt-codemodule-images/keepalive"
 )
@@ -63,6 +62,6 @@ func main() {
     
     if len(os.Args) >= 4 && os.Args[3] == "keepalive" {
         stopChan := make(chan struct{})
-		KeepAlive(stopChan)
+		keepalive.KeepAlive(stopChan)
     }
 }
