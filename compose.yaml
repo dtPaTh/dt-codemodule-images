@@ -1,0 +1,24 @@
+services:
+  dtsidecar:
+    image: oneagent-codemodules:${DT_IMAGE_TAG}
+    #user: 0:0
+    volumes:
+      - sharedvolume:/shared/
+  appcontainer:
+    image: "mcr.microsoft.com/dotnet/samples:aspnetapp"
+    ports:
+      - "8080"
+    volumes:
+      - sharedvolume:/shared/
+    environment:
+      - LD_PRELOAD=/shared/dynatrace/oneagent/agent/lib64/liboneagentproc.so
+      - DT_AGENTACTIVE=${DT_AGENTACTIVE}   
+      - DT_LOGSTREAM=${DT_LOGSTREAM}   
+      - DT_LOGLEVELCON=${DT_LOGLEVELCON}   
+      - DT_TENANT=${DT_TENANT}
+      - DT_TENANTTOKEN=${DT_TENANTTOKEN}
+      - DT_CONNECTION_POINT=${DT_CONNECTION_POINT}
+volumes:
+  sharedvolume:
+    driver:
+      local

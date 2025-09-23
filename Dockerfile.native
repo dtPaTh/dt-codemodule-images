@@ -1,19 +1,22 @@
 ARG DT_BASEIMG
 
 FROM golang:1.21 AS build
+
 WORKDIR /src
 
 ADD go.mod .
-ADD keepalive  ./keepalive
-ADD copy_dir.go .
+ADD keepalive ./keepalive
+ADD healthprobe ./healthprobe
+ADD serverless-bootstrap.go .
+
+ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 
 RUN go test ./keepalive -v
-RUN go build -o /bin/copy_dir ./copy_dir.go
+RUN go test ./healthprobe -v
+RUN go build -o /bin/serverless-bootstrap ./serverless-bootstrap.go
 
 FROM ${DT_BASEIMG} AS dtbase
+COPY --from=build /bin/serverless-bootstrap /opt/serverless-bootstrap
 
-FROM scratch
-COPY --from=dtbase /opt/dynatrace /opt/dynatrace
-COPY --from=build /bin/copy_dir /bin/copy_dir
-
-ENTRYPOINT ["/bin/copy_dir","/opt/dynatrace","/home/dynatrace","keepalive"]
+EXPOSE 8081
+ENTRYPOINT ["/opt/serverless-bootstrap","--healthprobe", "/opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper","--source=/opt/dynatrace/oneagent","--target=/shared/dynatrace/oneagent"]   
