@@ -17,7 +17,10 @@ RUN go build -o /bin/serverless-bootstrap ./serverless-bootstrap.go
 
 FROM ${DT_BASEIMG} AS dtbase
 
+FROM curlimages/curl
+COPY --from=dtbase /opt/dynatrace /opt/dynatrace
+
 COPY --from=build /bin/serverless-bootstrap /opt/serverless-bootstrap
 
 EXPOSE 8080
-ENTRYPOINT ["/opt/serverless-bootstrap","--keepalive","--healthprobe", "/opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper","--source=/opt/dynatrace/oneagent","--target=/shared/dynatrace/oneagent"]   
+ENTRYPOINT ["/opt/serverless-bootstrap","--keepalive","--healthprobe", "/opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper","--source=/opt/dynatrace/oneagent","--target=/shared/dynatrace/oneagent", "--debug"]   

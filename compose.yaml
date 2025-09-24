@@ -1,11 +1,19 @@
 services:
   dtsidecar:
-    image: oneagent-codemodules:${DT_IMAGE_TAG}
-    #user: 0:0
+    image: localhost/oneagent-codemodules:${DT_IMAGE_TAG}
+    healthcheck:
+      test: "curl -f http://localhost:8080/readiness"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    user: 0:0
     volumes:
       - sharedvolume:/shared/
   appcontainer:
     image: "mcr.microsoft.com/dotnet/samples:aspnetapp"
+    depends_on:
+      dtsidecar: 
+        condition: service_healthy 
     ports:
       - "8080"
     volumes:

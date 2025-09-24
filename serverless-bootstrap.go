@@ -36,6 +36,7 @@ func main() {
 
 		hp = healthprobe.New(port)
 		hp.Start()
+		hp.SetStartup(true)
 	}
 
 	if len(os.Args) >= (nextArg + 1) {
@@ -49,6 +50,8 @@ func main() {
 		if err := cmd.Run(); err != nil {
 			fmt.Fprintf(os.Stderr, "Execution failed: %v\n", err)
 		}
+		
+		hp.SetReady(true)
 	}
 
 	if keepAliveFlag {
