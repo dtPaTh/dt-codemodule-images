@@ -101,9 +101,10 @@ volumes:
 ```
 
 ### Step 3: Create a .env file for configurations
-To control agent options, we use environment variables via a .env file
+Provide the necessary configuration via runtime environment variables as defined in an .env file
 ``` 
 DT_IMAGE_TAG=1.321-test
+
 DT_TENANT=<YOUR-TENANT-ID>
 DT_TENANTTOKEN=<YOUR-TENANT-TOKEN> 
 DT_CONNECTION_POINT=<YOUR-CONNECTION-ENDPOINT>
