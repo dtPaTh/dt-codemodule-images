@@ -11,11 +11,11 @@ Not every serverless container service supports init-containers, but instead sid
 
 For this the Dynatrace code-module image needs to be enhanced to fit the requirements of a side-car integration. 
 
-This repostory includes an additional [cli](#Serverless-Boostrap) to be used in combination with the [dynatrace-bootstrapper](https://github.com/Dynatrace/dynatrace-bootstrapper) to enhance the required functionality
+This repostory includes an additional [cli](#Serverless-Bootstrap) to be used in combination with the [dynatrace-bootstrapper](https://github.com/Dynatrace/dynatrace-bootstrapper) to enhance the required functionality
 
-## Serverless-Boostrap CLI
+## Serverless-Bootstrap CLI
 
-```serverless-boostrap [--keepalive] [--healthprobe] [<command-to-execute> ...]```
+```serverless-bootstrap [--keepalive] [--healthprobe] [<command-to-execute> ...]```
 
 #### --keepalive
 After all commands have been executed, pauses the cli to prevent the side-car to be terminated. 
@@ -30,7 +30,7 @@ E.g. Google CloudRun requires to configure a startup probe for side-cars: https:
 
 Example command adding a health-probe endpoint to the sidecar while the artefacts are copied to the shared volume: 
 ```
-serverless-boostrap --healthprobe /opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper --source=/opt/dynatrace/oneagent --target=/shared/dynatrace/oneagent
+serverless-bootstrap --healthprobe /opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper --source=/opt/dynatrace/oneagent --target=/shared/dynatrace/oneagent
 ```
 
 ## Building the image
@@ -47,7 +47,7 @@ To simplify updating patch versions of the dynatrace code-modules, a rolling tag
 When a new version is available, one can build the new image and with the next container restart, the new (patch)-version is automatically applied.   
 
 ```
-docker build -f Dockerfile.native https://github.com/dtPaTh/dt-codemodule-images.git#serverless-boostrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.321.51.20250905-075429 -t oneagent-codemodules:1.321
+docker build -f Dockerfile.native https://github.com/dtPaTh/dt-codemodule-images.git#serverless-bootstrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.321.51.20250905-075429 -t oneagent-codemodules:1.321
 ```
 
 ## Example tutorial to test with docker-compose
@@ -58,7 +58,7 @@ This repository contains an alternative Dockerfile ```Dockerfile.test``` for thi
 ### Step 1: Build the image
 
 ```
-docker build -f Dockerfile.test https://github.com/dtPaTh/dt-codemodule-images.git#serverless-boostrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.321.51.20250905-075429 -t oneagent-codemodules:1.321-test
+docker build -f Dockerfile.test https://github.com/dtPaTh/dt-codemodule-images.git#serverless-bootstrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.321.51.20250905-075429 -t oneagent-codemodules:1.321-test
 ```
 
 ### Step 2: Create the docker-compose file
