@@ -2,7 +2,7 @@ services:
   dtsidecar:
     image: localhost/oneagent-codemodules:${DT_IMAGE_TAG}
     healthcheck:
-      test: "curl -f http://localhost:8080/readiness"
+      test: "curl -f http://localhost:8081/readiness"
       interval: 5s
       timeout: 5s
       retries: 10

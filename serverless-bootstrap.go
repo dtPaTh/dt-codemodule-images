@@ -22,7 +22,7 @@ func main() {
 	keepAliveFlag := false
 	healthProbeFlag := false
 
-	port := "8080"
+	port := "8081"
 	var hp *healthprobe.HealthProbe
 
 	if len(os.Args) >= (nextArg+1) && os.Args[nextArg] == "--keepalive" {

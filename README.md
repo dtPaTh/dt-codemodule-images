@@ -21,7 +21,7 @@ This repostory includes an additional [cli](#Serverless-Bootstrap) to be used in
 After all commands have been executed, pauses the cli to prevent the side-car to be terminated. 
 
 #### --healthprobe
-Enables the following healthprobe endpoints on **port 8080**
+Enables the following healthprobe endpoints on **port 8081**
 * **/startup** Startup probe indicates that the cli has started.
 * **/readiness** Readiness probe, indicating readiness to as soon as the ```<command-to-execute> ...``` has finished.
 * **/liveness** Liveness probe, indicating the cli is running
@@ -30,7 +30,7 @@ E.g. Google CloudRun requires to configure a startup probe for side-cars: https:
 
 Example command adding a health-probe endpoint to the sidecar while the artefacts are copied to the shared volume: 
 ```
-serverless-bootstrap --healthprobe /opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper --source=/opt/dynatrace/oneagent --target=/shared/dynatrace/oneagent
+serverless-bootstrap --keepalive --healthprobe /opt/dynatrace/oneagent/agent/lib64/dynatrace-bootstrapper --source=/opt/dynatrace/oneagent --target=/shared/dynatrace/oneagent
 ```
 
 ## Building the image
@@ -70,7 +70,7 @@ services:
   dtsidecar:
     image: localhost/oneagent-codemodules:${DT_IMAGE_TAG}
     healthcheck:
-      test: "curl -f http://localhost:8080/readiness"
+      test: "curl -f http://localhost:8081/readiness"
       interval: 5s
       timeout: 5s
       retries: 10
