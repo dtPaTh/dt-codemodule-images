@@ -119,6 +119,86 @@ DT_LOGLEVELCON=info
 docker-compose --env-file .env up
 ```
 
+## Example container template for Google CloudRun
+* Define the dynatrace side-car container, as a dependency for the app-container
+* Add a startup probe for the dynatrace side-car container
+* Add a shared volume mount to both containers
+* Add environment variables in the app container to configure and enable the agents
+
+```
+ ...
+  template:
+    metadata:
+      labels:
+        client.knative.dev/nonce: f4767h2a-7b21-4564-adc7-842a814d5dcd
+        run.googleapis.com/startupProbeType: Custom
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/client-name: cloud-console
+        run.googleapis.com/container-dependencies: '{"appcontainer-1":["oneagent-codemodules-1"]}'
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      serviceAccountName: 111111111111-compute@developer.gserviceaccount.com
+      containers:
+      - name: appcontainer-1
+        image: <your-appcontainer-image>
+        ports:
+        - name: http1
+          containerPort: 8080
+        env:
+        - name: LD_PRELOAD
+          value: /shared/dynatrace/oneagent/agent/lib64/liboneagentproc.so
+        - name: DT_AGENTACTIVE
+          value: 'True'
+        - name: DT_LOGSTREAM
+          value: stdout
+        - name: DT_LOGLEVELCON
+          value: info
+        - name: DT_TENANT
+          value: <tenantid>
+        - name: DT_TENANTTOKEN
+          value: <tenanttoken>
+        - name: DT_CONNECTION_POINT
+          value: <connection_endpoints>
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        volumeMounts:
+        - name: shared
+          mountPath: /shared
+        startupProbe:
+          initialDelaySeconds: 30
+          timeoutSeconds: 240
+          periodSeconds: 240
+          failureThreshold: 3
+          httpGet:
+            path: /readyness
+            port: 8080
+      - name: oneagent-codemodules-1
+        image: <oneagent-codemodules-with-serverless-bootstrapper>
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        volumeMounts:
+        - name: shared
+          mountPath: /shared
+        startupProbe:
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          periodSeconds: 10
+          failureThreshold: 10
+          httpGet:
+            path: /readiness
+            port: 8081
+      volumes:
+      - name: shared
+        emptyDir:
+          medium: Memory
+```
+
 
 
 
