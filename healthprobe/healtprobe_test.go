@@ -11,7 +11,7 @@ import (
 
 func TestHealthProbe(t *testing.T) {
 	// Create a new HealthProbe instance
-	probe := healthprobe.New("8080")
+	probe := healthprobe.New("8081")
 
 	// Start the probe server in a separate goroutine
 	go probe.Start()
