@@ -38,16 +38,30 @@ serverless-bootstrap --keepalive --healthprobe /opt/dynatrace/oneagent/agent/lib
 The Dockerfile ```Dockerfile.native``` builds the cli and adds it into the Dynatrace code-modules image as a base. 
 
 The Dockerfile can be configured using container build arguments:
-* ```DT_BASEIMG``` Defines the source image containing the Dynatrace codemodules. 
+* ```DT_BASEIMG``` Defines the source image ([public.ecr.aws/dynatrace/dynatrace-codemodules](https://gallery.ecr.aws/dynatrace/dynatrace-codemodules)) containing the Dynatrace codemodules. 
+
+**Available image tags:**
+* Immutable tags containing all code-modules of a specific release e.g.: 1.327.51.20251205-162230, 1.327.43.20251117-175735
+* Mutable (or rolling tags) with major.minor version scheme e.g.: 1.327
+* Technology specific images with immutable and mutable tags e.g.: 1.327.51.20251205-162230-java, 1.327-java, 1.327-dotnet
 
 The following docker build command creates the container image directly from the github repository 
-using a specific immutable code-module image from the Dynatrace public container registry on ECR.  
+using code-module images from the Dynatrace public container registry on ECR.  
 
-To simplify updating patch versions of the dynatrace code-modules, a rolling tag using a ```major.minor``` versioning scheme is set to the built image. 
+```
+docker build -f Dockerfile.native https://github.com/dtPaTh/dt-codemodule-images.git#serverless-bootstrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.327.51.20251205-162230 -t oneagent-codemodules:1.327.51.20251205-162230
+```
+
+To simplify automation providing autoamtic patch versions for dynatrace code-modules, the follwing docker command uses rolling tags on source images as well as target images, ollowing the ```major.minor``` versioning. 
 When a new version is available, one can build the new image and with the next container restart, the new (patch)-version is automatically applied.   
 
 ```
-docker build -f Dockerfile.native https://github.com/dtPaTh/dt-codemodule-images.git#serverless-bootstrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.321.51.20250905-075429 -t oneagent-codemodules:1.321
+docker build -f Dockerfile.native https://github.com/dtPaTh/dt-codemodule-images.git#serverless-bootstrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.327 -t oneagent-codemodules:1.327
+```
+
+Technology specific images are provided to benefit from smaller container images reducing  image build- and download-times, faster container startup, ..: 
+```
+docker build -f Dockerfile.native https://github.com/dtPaTh/dt-codemodule-images.git#serverless-bootstrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.327-java -t oneagent-codemodules:1.327-java
 ```
 
 ## Example tutorial to test with docker-compose
@@ -58,7 +72,7 @@ This repository contains an alternative Dockerfile ```Dockerfile.test``` for thi
 ### Step 1: Build the image
 
 ```
-docker build -f Dockerfile.test https://github.com/dtPaTh/dt-codemodule-images.git#serverless-bootstrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.321.51.20250905-075429 -t oneagent-codemodules:1.321-test
+docker build -f Dockerfile.test https://github.com/dtPaTh/dt-codemodule-images.git#serverless-bootstrapper --build-arg DT_BASEIMG=public.ecr.aws/dynatrace/dynatrace-codemodules:1.327 -t oneagent-codemodules:1.327
 ```
 
 ### Step 2: Create the docker-compose file
@@ -103,7 +117,7 @@ volumes:
 ### Step 3: Create a .env file for configurations
 Provide the necessary configuration via runtime environment variables as defined in an .env file
 ``` 
-DT_IMAGE_TAG=1.321-test
+DT_IMAGE_TAG=1.327
 
 DT_TENANT=<YOUR-TENANT-ID>
 DT_TENANTTOKEN=<YOUR-TENANT-TOKEN> 
